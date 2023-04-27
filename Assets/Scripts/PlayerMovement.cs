@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
             crouchCoroutine = StartCoroutine(Crouch());
         }
 
-        if (Input.GetButtonDown("Crouch") && !isSliding && isGrounded && Input.GetButtonDown("Sprint"))
+        if (Input.GetButton("Crouch") && !isSliding && isGrounded && Input.GetButton("Sprint"))
         {
             isSliding = true;
             slideStartTime = Time.time;
@@ -126,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
                 currentHeight = Mathf.Lerp(startHeight, crouchHeight, timeElapsed / crouchTime);
                 Camera.main.transform.localPosition = new Vector3(cameraStartPosition.x, cameraStartPosition.y * currentHeight / startHeight, cameraStartPosition.z);
             }
-            else
+            else if (!Physics.Raycast(transform.position, Vector3.up, standingHeight))
             {
                 currentSpeed = Mathf.Lerp(crouchSpeed, speed, timeElapsed / crouchTime);
                 currentHeight = Mathf.Lerp(startHeight, standingHeight, timeElapsed / crouchTime);
