@@ -4,29 +4,35 @@ using UnityEngine;
 
 public class GlassesController : MonoBehaviour
 {
+    private bool canUse3DGlasses = false;
     private Camera cam;
     private List<GameObject> pictures = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
-        // Debug.Log()
-        GameObject[] go = GameObject.FindGameObjectsWithTag("pictures");
-        foreach (GameObject item in go)
+
+        GameObject[] pics = GameObject.FindGameObjectsWithTag("pictures");
+        foreach (GameObject pic in pics)
         {
-            pictures.Add(item);
+            pictures.Add(pic);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        canUse3DGlasses = GameObject.Find("Player").GetComponent<PlayerAttributes>().IsWith3DGlasses;
+
+        // Debug.Log(canUse3DGlasses);
+        if (Input.GetKeyDown(KeyCode.F) && canUse3DGlasses)
         {
             cam.enabled = !cam.enabled;
-            foreach (GameObject item in pictures)
+
+            foreach (GameObject pic in pictures)
             {
-                item.GetComponent<Collider>().enabled = cam.enabled;
+                pic.GetComponent<Collider>().enabled = cam.enabled;
             }
         }
     }
