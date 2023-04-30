@@ -21,16 +21,12 @@ public class PlayerActions : MonoBehaviour
         {
             hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
 
-            if (Input.GetKeyDown(KeyCode.E) && !this.GetComponent<PlayerAttributes>().IsWith3DGlasses)
+            if (Input.GetKeyDown(KeyCode.R) && !this.GetComponent<PlayerAttributes>().IsWith3DGlasses)
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 Debug.Log("acquired 3D glasses");
                 this.GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
             }
-        }
-        else if (active)
-        {
-            hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = hit.transform.tag == "3D Glasses Holder";
         }
     }
 }

@@ -110,6 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762059142371905197}
   - component: {fileID: 762059142371905194}
+  - component: {fileID: 2217690595010875081}
   - component: {fileID: 762059142371905196}
   - component: {fileID: 8858164262248787132}
   - component: {fileID: 4776163762232892758}
@@ -155,6 +156,20 @@ CharacterController:
   m_StepOffset: 0.7
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &2217690595010875081
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762059142371905195}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2
+  m_Height: 5
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &762059142371905196
 MonoBehaviour:
