@@ -12,17 +12,25 @@ public class PlayerActions : MonoBehaviour
     private void Update()
     {
         RaycastHit hit;
-        active = Physics.Raycast(cam.position, cam.TransformDirection(Vector3.forward), out hit, playerActivateDistance);
+        Vector3 rayDirection = cam.TransformDirection(Vector3.forward);
+        active = Physics.Raycast(cam.position, rayDirection, out hit, playerActivateDistance);
+
+        Debug.DrawRay(cam.position, rayDirection * playerActivateDistance, Color.black);
 
         if (active && hit.transform.tag == "3D Glasses Holder")
         {
             hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
-            if (Input.GetKeyDown(KeyCode.E))
+
+            if (Input.GetKeyDown(KeyCode.E) && !this.GetComponent<PlayerAttributes>().IsWith3DGlasses)
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 Debug.Log("acquired 3D glasses");
                 this.GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
             }
+        }
+        else if (active)
+        {
+            hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = hit.transform.tag == "3D Glasses Holder";
         }
     }
 }
