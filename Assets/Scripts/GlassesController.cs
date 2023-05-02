@@ -25,7 +25,6 @@ public class GlassesController : MonoBehaviour
     {
         canUse3DGlasses = GameObject.Find("Player").GetComponent<PlayerAttributes>().IsWith3DGlasses;
 
-        // Debug.Log(canUse3DGlasses);
         if (Input.GetKeyDown(KeyCode.F) && canUse3DGlasses)
         {
             cam.enabled = !cam.enabled;

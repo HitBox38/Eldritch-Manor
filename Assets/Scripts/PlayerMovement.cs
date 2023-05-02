@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Movement Speed")][SerializeField] private float speed = 6f;
     [Tooltip("Sprint Modifier")][SerializeField] private float sprint = 2f;
     [Tooltip("Crouch Speed")][SerializeField] private float crouchSpeed = 3f;
-    private float currentSpeed;
+    private float _currentSpeed;
     [SerializeField] private float gravity = -19.62f;
     [SerializeField] private float jumpHeight = 3f;
 
@@ -34,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    public float CurrentSpeed
+    {
+        get => _currentSpeed;
+        set => _currentSpeed = value;
+    }
 
     private Vector3 velocity;
     private bool isGrounded;
@@ -42,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         currentHeight = cc.height;
-        currentSpeed = speed;
+        CurrentSpeed = speed;
     }
 
     void Update()
@@ -56,11 +61,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Sprint"))
         {
-            currentSpeed = currentSpeed * sprint;
+            CurrentSpeed = CurrentSpeed * sprint;
         }
         if (Input.GetButtonUp("Sprint"))
         {
-            currentSpeed = currentSpeed / sprint;
+            CurrentSpeed = CurrentSpeed / sprint;
         }
 
         if (Input.GetButtonDown("Crouch"))
@@ -83,12 +88,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q) && currentWheel != null)
         {
-            Debug.Log("Left");
             currentWheel.Rotate(-1f);
         }
         if (Input.GetKey(KeyCode.E) && currentWheel != null)
         {
-            Debug.Log("Right");
             currentWheel.Rotate(1f);
         }
         if (currentWheel != null && Vector3.Distance(transform.position, currentWheel.transform.position) > 3f)
@@ -101,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        cc.Move(move * currentSpeed * Time.deltaTime);
+        cc.Move(move * CurrentSpeed * Time.deltaTime);
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -150,13 +153,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isCrouching)
             {
-                currentSpeed = Mathf.Lerp(speed, crouchSpeed, timeElapsed / crouchTime);
+                CurrentSpeed = Mathf.Lerp(speed, crouchSpeed, timeElapsed / crouchTime);
                 currentHeight = Mathf.Lerp(startHeight, crouchHeight, timeElapsed / crouchTime);
                 Camera.main.transform.localPosition = new Vector3(cameraStartPosition.x, cameraStartPosition.y * currentHeight / startHeight, cameraStartPosition.z);
             }
             else if (!Physics.Raycast(transform.position, Vector3.up, standingHeight))
             {
-                currentSpeed = Mathf.Lerp(crouchSpeed, speed, timeElapsed / crouchTime);
+                CurrentSpeed = Mathf.Lerp(crouchSpeed, speed, timeElapsed / crouchTime);
                 currentHeight = Mathf.Lerp(startHeight, standingHeight, timeElapsed / crouchTime);
                 Camera.main.transform.localPosition = new Vector3(cameraStartPosition.x, cameraStartPosition.y * currentHeight / startHeight, cameraStartPosition.z);
             }
