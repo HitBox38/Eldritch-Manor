@@ -29,14 +29,16 @@ public class DraggableObject : MonoBehaviour
     {
         if (isPulling)
         {
-            // TODO: fix the player going up the cart
+            // TODO: fix the player going up the cart! maybe clamp?
             Vector3 targetPosition = player.transform.position + player.transform.forward * followDistance;
             targetPosition.y = transform.position.y;
+            // targetPosition.y = Mathf.Clamp()
             rb.MovePosition(Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.fixedDeltaTime));
         }
         if (isPushing)
         {
             Vector3 forceDirection = (transform.position - player.transform.position).normalized;
+            forceDirection.y = 0;
             rb.AddForce(forceDirection * forceAmount, ForceMode.Force);
         }
     }
@@ -57,7 +59,7 @@ public class DraggableObject : MonoBehaviour
                 isPushing = true;
                 isPulling = false;
                 rb.isKinematic = false;
-                playerMovement.CurrentSpeed = isPulling ? initialPlayerSpeed * slowDownFactor : initialPlayerSpeed;
+                playerMovement.CurrentSpeed = isPushing ? initialPlayerSpeed * slowDownFactor : initialPlayerSpeed;
             }
         }
     }
