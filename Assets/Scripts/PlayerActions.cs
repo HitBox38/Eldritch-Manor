@@ -21,7 +21,7 @@ public class PlayerActions : MonoBehaviour
         {
             hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
 
-            if (Input.GetKeyDown(KeyCode.R) && !GetComponent<PlayerAttributes>().IsWith3DGlasses)
+            if (Input.GetKeyDown(KeyCode.F) && !GetComponent<PlayerAttributes>().IsWith3DGlasses)
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 Debug.Log("acquired 3D glasses");
