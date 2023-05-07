@@ -583,5 +583,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43251a6face72846a00b40cab17484b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   forceAmount: 50
-  pushPullInput: 323
+  pushInput: 323
+  pullInput: 324
+  slowDownFactor: 0.5
+  followDistance: 3
+  followSpeed: 2
