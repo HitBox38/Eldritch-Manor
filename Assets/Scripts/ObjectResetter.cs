@@ -25,13 +25,14 @@ public class ObjectResetter : MonoBehaviour
             other.collider.transform.rotation = originalRotation;
 
             // Wait a few seconds and then push the object
-            StartCoroutine(PushAfterDelay(other.collider.GetComponent<Rigidbody>(), delayOnThePush));
+            StartCoroutine(PushAfterDelay(other.collider.GetComponent<Rigidbody>(), 0));
         }
     }
 
     IEnumerator PushAfterDelay(Rigidbody objectRigidbody, float delay)
     {
+        objectRigidbody.velocity = Vector3.zero;
         yield return new WaitForSeconds(delay);
-        objectRigidbody.AddForce(Vector3.forward, ForceMode.Impulse);
+        objectRigidbody.velocity = Vector3.forward * 75;
     }
 }

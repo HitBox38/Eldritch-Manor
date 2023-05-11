@@ -79,7 +79,7 @@ public class PlayerActions : MonoBehaviour
 
     private IEnumerator DropAndRemove(Transform item)
     {
-        float dropDuration = 0.2f;
+        float dropDuration = 5f;
         float elapsedTime = 0f;
         Vector3 initialPosition = item.localPosition;
         Vector3 dropPosition = initialPosition + new Vector3(0, -2f, 0);
