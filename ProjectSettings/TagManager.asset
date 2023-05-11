@@ -6,6 +6,9 @@ TagManager:
   tags:
   - pictures
   - 3D Glasses Holder
+  - Ball
+  - PickupItem
+  - Net
   layers:
   - Default
   - TransparentFX
