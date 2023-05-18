@@ -213,7 +213,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 762059142239044405}
   playerActivateDistance: 3
-  hand: {fileID: 4443861867362249538}
+  hand: {fileID: 2047018458109470477}
+  redDomino: {fileID: 0}
+  numRays: 10
+  coneAngle: 45
+  grabDuration: 0.5
 --- !u!114 &4776163762232892758
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class PhysicsEnabler : MonoBehaviour
         if (other.name == "Player")
         {
             affectedObject.GetComponent<Rigidbody>().velocity = Vector3.forward * requiredSpeed;
-            Destroy(this, 0.5f);
+            Destroy(this);
         }
     }
 }

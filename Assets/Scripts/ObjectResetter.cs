@@ -5,7 +5,6 @@ using UnityEngine;
 public class ObjectResetter : MonoBehaviour
 {
     [SerializeField] private Transform Ball;
-    [SerializeField] private float delayOnThePush = 2f;
 
     private Vector3 originalPosition;
     private Quaternion originalRotation;

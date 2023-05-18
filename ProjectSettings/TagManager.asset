@@ -9,6 +9,12 @@ TagManager:
   - Ball
   - PickupItem
   - Net
+  - Domino
+  - Ball_Room_2
+  - Rope
+  - Rotator
+  - Button
+  - Teleporter
   layers:
   - Default
   - TransparentFX
