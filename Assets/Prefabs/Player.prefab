@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 762059142239044402}
   - component: {fileID: 762059142239044403}
   - component: {fileID: 762059142239044404}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 762059142371905196}
   - component: {fileID: 8858164262248787132}
   - component: {fileID: 4776163762232892758}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -212,12 +212,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 762059142239044405}
-  playerActivateDistance: 3
+  playerActivateDistance: 2
   hand: {fileID: 2047018458109470477}
   redDomino: {fileID: 0}
-  numRays: 10
-  coneAngle: 45
   grabDuration: 0.5
+  currentPickupItem: {fileID: 0}
 --- !u!114 &4776163762232892758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +241,7 @@ GameObject:
   - component: {fileID: 762059142385885988}
   - component: {fileID: 762059142385885990}
   - component: {fileID: 762059142385885991}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 762059143908827295}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,7 +353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2047018458109470477}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +386,7 @@ GameObject:
   - component: {fileID: 1160559528898648729}
   - component: {fileID: 4970679610596680022}
   - component: {fileID: 1360727940}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 3D Glasses Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,8 +9,6 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private float playerActivateDistance;
     [SerializeField] private Transform hand;
     [SerializeField] private HangedDomino redDomino;
-    [SerializeField] private int numRays = 10;
-    [SerializeField] private float coneAngle = 45f;
     [SerializeField] private float grabDuration = 0.5f;
 
     private bool active = false;
@@ -18,15 +16,11 @@ public class PlayerActions : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < numRays; i++)
-        {
-            float angle = i * (coneAngle / (numRays - 1)) - (coneAngle / 2f);
-            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * cam.TransformDirection(Vector3.forward);
-            RaycastHit hit;
-            active = Physics.Raycast(cam.position, rayDirection, out hit, playerActivateDistance);
+        Collider[] hitColliders = Physics.OverlapSphere(cam.position, playerActivateDistance);
 
-            // Handle your raycast logic here, e.g., interacting with objects
-            if (active && hit.transform.tag == "3D Glasses Holder")
+        foreach (Collider hit in hitColliders)
+        {
+            if (hit.transform.tag == "3D Glasses Holder")
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
 
@@ -37,7 +31,7 @@ public class PlayerActions : MonoBehaviour
                     GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
                 }
             }
-            else if (active && hit.transform.tag == "PickupItem")
+            else if (hit.transform.tag == "PickupItem")
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -52,7 +46,7 @@ public class PlayerActions : MonoBehaviour
                     }
                 }
             }
-            else if (active && FindChildWithTag(hit.transform.gameObject, "PickupItem") != null)
+            else if (FindChildWithTag(hit.transform.gameObject, "PickupItem") != null)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -66,7 +60,7 @@ public class PlayerActions : MonoBehaviour
                     }
                 }
             }
-            else if (active && hit.transform.tag == "Net")
+            else if (hit.transform.tag == "Net")
             {
                 if (Input.GetKeyDown(KeyCode.F) && currentPickupItem != null)
                 {
@@ -77,7 +71,7 @@ public class PlayerActions : MonoBehaviour
                     currentPickupItem = null;
                 }
             }
-            else if (active && hit.transform.tag == "Rope" && currentPickupItem != null)
+            else if (hit.transform.tag == "Rope" && currentPickupItem != null)
             {
                 if (Input.GetKeyDown(KeyCode.F) && currentPickupItem.name == "Key")
                 {
@@ -89,7 +83,7 @@ public class PlayerActions : MonoBehaviour
                     currentPickupItem = null;
                 }
             }
-            else if (active && hit.transform.tag == "Rotator" && currentPickupItem != null)
+            else if (hit.transform.tag == "Rotator" && currentPickupItem != null)
             {
                 if (Input.GetKeyDown(KeyCode.F) && currentPickupItem.name == "Wheel")
                 {
@@ -100,7 +94,7 @@ public class PlayerActions : MonoBehaviour
                     currentPickupItem = null;
                 }
             }
-            else if (active && FindChildWithTag(hit.transform.gameObject, "Button") != null)
+            else if (FindChildWithTag(hit.transform.gameObject, "Button") != null)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -188,12 +182,7 @@ public class PlayerActions : MonoBehaviour
         if (cam == null) return;
 
         Gizmos.color = Color.green;
-        for (int i = 0; i < numRays; i++)
-        {
-            float angle = i * (coneAngle / (numRays - 1)) - (coneAngle / 2f);
-            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * cam.TransformDirection(Vector3.forward);
-            Gizmos.DrawRay(cam.position, rayDirection * playerActivateDistance);
-        }
+        Gizmos.DrawWireSphere(cam.position, playerActivateDistance);
     }
 
 }

@@ -10,8 +10,6 @@ public class Teleporter : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            Debug.Log("Teleport");
-
             // Access the Character Controller component
             CharacterController characterController = other.GetComponent<CharacterController>();
 
