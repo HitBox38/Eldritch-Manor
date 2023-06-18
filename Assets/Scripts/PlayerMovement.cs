@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -14,20 +12,6 @@ public class PlayerMovement : MonoBehaviour
     private float _currentSpeed;
     [SerializeField] private float gravity = -19.62f;
     [SerializeField] private float jumpHeight = 3f;
-
-    [Header("Crouch Properties")]
-    [SerializeField] private float crouchHeight = 0.5f;
-    [SerializeField] private float standingHeight = 2f;
-    [SerializeField] private float crouchTime = 0.5f;
-    private float currentHeight;
-    private bool isCrouching;
-    private Coroutine crouchCoroutine;
-
-    [Header("Slide Properties")]
-    [SerializeField] private float slideSpeed = 10f;
-    [SerializeField] private float slideDuration = 1f;
-    private bool isSliding;
-    private float slideStartTime;
 
     [Header("Ground Check Properties")]
     [SerializeField] private Transform groundCheck;
@@ -46,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
-        currentHeight = cc.height;
         CurrentSpeed = speed;
     }
 
@@ -66,24 +49,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonUp("Sprint"))
         {
             CurrentSpeed = CurrentSpeed / sprint;
-        }
-
-        if (Input.GetButtonDown("Crouch"))
-        {
-            if (crouchCoroutine != null)
-            {
-                StopCoroutine(crouchCoroutine);
-            }
-
-            isCrouching = !isCrouching;
-            crouchCoroutine = StartCoroutine(Crouch());
-        }
-
-        if (Input.GetButton("Crouch") && !isSliding && isGrounded && Input.GetButton("Sprint"))
-        {
-            isSliding = true;
-            slideStartTime = Time.time;
-            StartCoroutine(Crouch());
         }
 
         if (Input.GetKey(KeyCode.Q) && currentWheel != null)
@@ -116,21 +81,6 @@ public class PlayerMovement : MonoBehaviour
         cc.Move(velocity * Time.deltaTime);
     }
 
-    void FixedUpdate()
-    {
-        if (isSliding)
-        {
-            cc.Move(transform.forward * slideSpeed * Time.fixedDeltaTime);
-
-            if (Time.time - slideStartTime > slideDuration)
-            {
-                isSliding = false;
-                StartCoroutine(Crouch());
-
-            }
-        }
-    }
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider.name == "Wheel")
@@ -140,33 +90,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentWheel = wheel;
             }
-        }
-    }
-
-    private IEnumerator Crouch()
-    {
-        float timeElapsed = 0;
-        float startHeight = cc.height;
-        Vector3 cameraStartPosition = Camera.main.transform.localPosition;
-
-        while (timeElapsed < crouchTime)
-        {
-            if (isCrouching)
-            {
-                CurrentSpeed = Mathf.Lerp(speed, crouchSpeed, timeElapsed / crouchTime);
-                currentHeight = Mathf.Lerp(startHeight, crouchHeight, timeElapsed / crouchTime);
-                Camera.main.transform.localPosition = new Vector3(cameraStartPosition.x, cameraStartPosition.y * currentHeight / startHeight, cameraStartPosition.z);
-            }
-            else if (!Physics.Raycast(transform.position, Vector3.up, standingHeight))
-            {
-                CurrentSpeed = Mathf.Lerp(crouchSpeed, speed, timeElapsed / crouchTime);
-                currentHeight = Mathf.Lerp(startHeight, standingHeight, timeElapsed / crouchTime);
-                Camera.main.transform.localPosition = new Vector3(cameraStartPosition.x, cameraStartPosition.y * currentHeight / startHeight, cameraStartPosition.z);
-            }
-            cc.height = currentHeight;
-
-            timeElapsed += Time.deltaTime;
-            yield return null;
         }
     }
 }

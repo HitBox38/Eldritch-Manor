@@ -31,5 +31,9 @@ public class HangedDomino : MonoBehaviour
             rb.AddForce(Vector3.down * 9.81f * 2);
             isHanged = true;
         }
+        else
+        {
+            rb.Sleep();
+        }
     }
 }

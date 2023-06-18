@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class GlassesController : MonoBehaviour
 {
+    [SerializeField] float initialCountdown = 10f;
     private bool canUse3DGlasses = false;
     private Camera cam;
     private List<GameObject> pictures = new List<GameObject>();
+    private bool timerRunning = false;
+    private float countdown;
 
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
-
+        countdown = initialCountdown;
         GameObject[] pics = GameObject.FindGameObjectsWithTag("pictures");
         foreach (GameObject pic in pics)
         {
@@ -25,13 +28,34 @@ public class GlassesController : MonoBehaviour
     {
         canUse3DGlasses = GameObject.Find("Player").GetComponent<PlayerAttributes>().IsWith3DGlasses;
 
-        if (Input.GetKeyDown(KeyCode.R) && canUse3DGlasses)
+        if (Input.GetKeyDown(KeyCode.R) && canUse3DGlasses && !timerRunning)
         {
             cam.enabled = !cam.enabled;
 
             foreach (GameObject pic in pictures)
             {
                 pic.GetComponent<Collider>().enabled = cam.enabled;
+            }
+            timerRunning = true;
+        }
+
+        if (timerRunning)
+        {
+            if (countdown > 0)
+            {
+                countdown -= Time.deltaTime;
+            }
+            else
+            {
+
+                cam.enabled = !cam.enabled;
+
+                foreach (GameObject pic in pictures)
+                {
+                    pic.GetComponent<Collider>().enabled = cam.enabled;
+                }
+                countdown = initialCountdown;
+                timerRunning = false;
             }
         }
     }

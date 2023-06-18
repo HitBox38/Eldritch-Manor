@@ -189,11 +189,6 @@ MonoBehaviour:
   crouchSpeed: 3
   gravity: -19.62
   jumpHeight: 3
-  crouchHeight: 0.5
-  standingHeight: 3.8
-  crouchTime: 0.5
-  slideSpeed: 10
-  slideDuration: 1
   groundCheck: {fileID: 762059143908827295}
   groundDistance: 0.4
   groundMask:
@@ -463,3 +458,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f0f6c1261a6c442803c2a40c46e038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialCountdown: 10
