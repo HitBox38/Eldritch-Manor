@@ -21,7 +21,6 @@ public class PlayerActions : MonoBehaviour
 
         foreach (Collider hit in hitColliders)
         {
-            Debug.Log(hit.transform.tag);
             if (hit.transform.tag == "3D Glasses Holder")
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
@@ -114,7 +113,6 @@ public class PlayerActions : MonoBehaviour
             }
             else if (hit.transform.tag == "Rotator" && currentWheel == null)
             {
-                Debug.Log("In range");
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     WheelController wheel = hit.gameObject.GetComponentInParent<WheelController>();
@@ -122,7 +120,6 @@ public class PlayerActions : MonoBehaviour
                     {
                         currentWheel = wheel;
                         GetComponent<CharacterController>().enabled = false;
-                        Debug.Log("Can't move");
                     }
                 }
             }
