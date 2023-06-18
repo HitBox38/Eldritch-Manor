@@ -903,6 +903,11 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &119251113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2152512244361145214, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
+  m_PrefabInstance: {fileID: 2411618057430730453}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &310533414
 Mesh:
   m_ObjectHideFlags: 0
@@ -9052,11 +9057,23 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1502616646, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
+      propertyPath: wheel
+      value: 
+      objectReference: {fileID: 119251113}
+    - target: {fileID: 1502616646, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
       propertyPath: linkedObject
       value: 
       objectReference: {fileID: 1763072040}
+    - target: {fileID: 2152512244361145214, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
+      propertyPath: m_TagString
+      value: Rotator
+      objectReference: {fileID: 0}
     - target: {fileID: 4863774452997331094, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
       propertyPath: m_Name
+      value: Rotator
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863774452997331094, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}
+      propertyPath: m_TagString
       value: Rotator
       objectReference: {fileID: 0}
     - target: {fileID: 7987001491516270704, guid: 97f486d2e93a78f47869731d85aadb65, type: 3}

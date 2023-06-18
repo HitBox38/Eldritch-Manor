@@ -10,16 +10,18 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private Transform hand;
     [SerializeField] private HangedDomino redDomino;
     [SerializeField] private float grabDuration = 0.5f;
-
-    private bool active = false;
     [SerializeField] private GameObject currentPickupItem;
+    private WheelController currentWheel;
+    private bool isButtonMoving = false;
+
 
     private void Update()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(cam.position, playerActivateDistance);
+        Collider[] hitColliders = Physics.OverlapSphere(new Vector3(cam.position.x, cam.position.y - 1, cam.position.z), playerActivateDistance);
 
         foreach (Collider hit in hitColliders)
         {
+            Debug.Log(hit.transform.tag);
             if (hit.transform.tag == "3D Glasses Holder")
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
@@ -96,20 +98,48 @@ public class PlayerActions : MonoBehaviour
             }
             else if (FindChildWithTag(hit.transform.gameObject, "Button") != null)
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.F) && !isButtonMoving)
                 {
                     GameObject button = FindChildWithTag(hit.transform.gameObject, "Button");
                     Vector3 center = new Vector3(Screen.width / 2, Screen.height / 2, button.transform.position.z);
                     Vector3 direction = (center - button.transform.position).normalized;
-                    float scale = 0.1f; // Adjust this value to control how far inward you want the button to move
+                    float scale = -0.1f; // Adjust this value to control how far inward you want the button to move
                     Vector3 targetPosition = button.transform.position + direction * scale;
 
-                    button.transform.position = Vector3.Lerp(button.transform.position, targetPosition, Time.deltaTime);
+                    StartCoroutine(MoveButton(button, targetPosition, 0.25f)); // Adjust the duration as needed
 
                     GameObject ball = FindChildWithTag(hit.transform.gameObject, "Ball_Room_2");
                     ball.GetComponent<BallController>().IsDone = false;
                 }
             }
+            else if (hit.transform.tag == "Rotator" && currentWheel == null)
+            {
+                Debug.Log("In range");
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    WheelController wheel = hit.gameObject.GetComponentInParent<WheelController>();
+                    if (wheel != null)
+                    {
+                        currentWheel = wheel;
+                        GetComponent<CharacterController>().enabled = false;
+                        Debug.Log("Can't move");
+                    }
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.A) && currentWheel != null)
+        {
+            currentWheel.Rotate(-1f);
+        }
+        if (Input.GetKey(KeyCode.D) && currentWheel != null)
+        {
+            currentWheel.Rotate(1f);
+        }
+        if (Input.GetKey(KeyCode.G) && currentWheel != null && !GetComponent<CharacterController>().enabled)
+        {
+            currentWheel = null;
+            GetComponent<CharacterController>().enabled = true;
+            Debug.Log("Can move");
         }
     }
 
@@ -143,6 +173,35 @@ public class PlayerActions : MonoBehaviour
 
         Destroy(item.gameObject);
     }
+
+    IEnumerator MoveButton(GameObject button, Vector3 targetPosition, float duration)
+    {
+        isButtonMoving = true;
+        Vector3 startPosition = button.transform.position;
+        float startTime = Time.time;
+
+        while (Time.time < startTime + duration)
+        {
+            button.transform.position = Vector3.Lerp(startPosition, targetPosition, (Time.time - startTime) / duration);
+            yield return null;
+        }
+
+        button.transform.position = targetPosition;
+
+        yield return new WaitForSeconds(0.5f); // Adjust this value to control how long the button stays pushed in
+
+        startTime = Time.time;
+
+        while (Time.time < startTime + duration)
+        {
+            button.transform.position = Vector3.Lerp(targetPosition, startPosition, (Time.time - startTime) / duration);
+            yield return null;
+        }
+
+        button.transform.position = startPosition;
+        isButtonMoving = false;
+    }
+
 
     private GameObject FindChildWithTag(GameObject parentGameObject, string desiredTag)
     {
@@ -182,7 +241,7 @@ public class PlayerActions : MonoBehaviour
         if (cam == null) return;
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(cam.position, playerActivateDistance);
+        Gizmos.DrawWireSphere(new Vector3(cam.position.x, cam.position.y - 1, cam.position.z), playerActivateDistance);
     }
 
 }

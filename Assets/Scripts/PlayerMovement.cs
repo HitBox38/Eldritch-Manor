@@ -3,12 +3,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController cc;
-    private WheelController currentWheel;
 
     [Header("Movement Properties")]
     [Tooltip("Movement Speed")][SerializeField] private float speed = 6f;
     [Tooltip("Sprint Modifier")][SerializeField] private float sprint = 2f;
-    [Tooltip("Crouch Speed")][SerializeField] private float crouchSpeed = 3f;
     private float _currentSpeed;
     [SerializeField] private float gravity = -19.62f;
     [SerializeField] private float jumpHeight = 3f;
@@ -51,18 +49,7 @@ public class PlayerMovement : MonoBehaviour
             CurrentSpeed = CurrentSpeed / sprint;
         }
 
-        if (Input.GetKey(KeyCode.Q) && currentWheel != null)
-        {
-            currentWheel.Rotate(-1f);
-        }
-        if (Input.GetKey(KeyCode.E) && currentWheel != null)
-        {
-            currentWheel.Rotate(1f);
-        }
-        if (currentWheel != null && Vector3.Distance(transform.position, currentWheel.transform.position) > 3f)
-        {
-            currentWheel = null;
-        }
+
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -79,17 +66,5 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         cc.Move(velocity * Time.deltaTime);
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.collider.name == "Wheel")
-        {
-            WheelController wheel = hit.collider.gameObject.GetComponentInParent<WheelController>();
-            if (wheel != null)
-            {
-                currentWheel = wheel;
-            }
-        }
     }
 }

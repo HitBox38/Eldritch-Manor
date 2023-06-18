@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,7 +46,6 @@ public class GlassesController : MonoBehaviour
             }
             else
             {
-
                 cam.enabled = !cam.enabled;
 
                 foreach (GameObject pic in pictures)

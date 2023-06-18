@@ -29,7 +29,6 @@ public class HangedDomino : MonoBehaviour
         if (!isHanged)
         {
             rb.AddForce(Vector3.down * 9.81f * 2);
-            isHanged = true;
         }
         else
         {
