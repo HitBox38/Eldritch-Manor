@@ -29,11 +29,14 @@ public class GlassesController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && canUse3DGlasses && !timerRunning)
         {
-            cam.enabled = !cam.enabled;
+            cam.enabled = false;
 
             foreach (GameObject pic in pictures)
             {
-                pic.GetComponent<Collider>().enabled = cam.enabled;
+                if (pic.layer == 8)
+                {
+                    pic.GetComponent<MeshCollider>().enabled = false;
+                }
             }
             timerRunning = true;
         }
@@ -46,11 +49,11 @@ public class GlassesController : MonoBehaviour
             }
             else
             {
-                cam.enabled = !cam.enabled;
+                cam.enabled = true;
 
                 foreach (GameObject pic in pictures)
                 {
-                    pic.GetComponent<Collider>().enabled = cam.enabled;
+                    pic.GetComponent<MeshCollider>().enabled = true;
                 }
                 countdown = initialCountdown;
                 timerRunning = false;

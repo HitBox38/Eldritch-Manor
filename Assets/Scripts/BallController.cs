@@ -51,19 +51,19 @@ public class BallController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
         if (other.name == "Pipe" && !CompareTag("Ball_Room_2"))
         {
             isDone = true;
             rb.velocity = Vector3.zero;
             nextRoom.layer = 8;
+            nextRoom.tag = "pictures";
         }
         if (other.name == "Player")
         {
             Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (horizontalVelocity.magnitude > topSpeed / 2)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                GameManager.instance.ResetScene();
             }
         }
         if (other.tag == "Domino")

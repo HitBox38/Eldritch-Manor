@@ -15,6 +15,7 @@ TagManager:
   - Rotator
   - Button
   - Teleporter
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

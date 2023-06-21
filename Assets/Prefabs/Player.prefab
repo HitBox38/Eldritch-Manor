@@ -186,7 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   sprint: 2
-  crouchSpeed: 3
   gravity: -19.62
   jumpHeight: 3
   groundCheck: {fileID: 762059143908827295}
@@ -350,7 +349,7 @@ GameObject:
   - component: {fileID: 2047018458109470477}
   m_Layer: 6
   m_Name: Hand
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

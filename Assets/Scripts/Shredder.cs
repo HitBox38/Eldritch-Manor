@@ -19,7 +19,7 @@ public class Shredder : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameManager.instance.ResetScene();
         }
     }
 }

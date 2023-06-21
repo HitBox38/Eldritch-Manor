@@ -14,6 +14,10 @@ public class PlayerActions : MonoBehaviour
     private WheelController currentWheel;
     private bool isButtonMoving = false;
 
+    public static event Action<string> OnCloseToInteract;
+    public static event Action OnLeftFromInteract;
+    // TODO: add more events when adding the sound manager!
+
 
     private void Update()
     {
@@ -21,39 +25,47 @@ public class PlayerActions : MonoBehaviour
 
         foreach (Collider hit in hitColliders)
         {
-            if (hit.transform.tag == "3D Glasses Holder")
+            if (hit.transform.tag == "3D Glasses Holder" && !GetComponent<PlayerAttributes>().IsWith3DGlasses)
             {
                 hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
-
-                if (Input.GetKeyDown(KeyCode.F) && !GetComponent<PlayerAttributes>().IsWith3DGlasses)
+                OnCloseToInteract?.Invoke("Press F to acquire the 3D glasses");
+                if (Input.GetKeyDown(KeyCode.F))
                 {
+                    OnLeftFromInteract?.Invoke();
                     hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                     Debug.Log("acquired 3D glasses");
                     GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
                 }
             }
-            else if (hit.transform.tag == "PickupItem")
+            else if (hit.transform.tag == "PickupItem" && hit.GetComponentInParent<Transform>().name != "Hand")
             {
+                Debug.Log(hit.name + " need to get parent " + hit.GetComponentInParent<Transform>().name);
+                OnCloseToInteract?.Invoke("Press F to pick up " + hit.name);
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     GameObject pickedOne = hit.transform.gameObject;
                     GameObject pickupItem = HasComponent(pickedOne, "IPickupItem") ? pickedOne : null;
                     if (pickupItem != null)
                     {
+                        OnLeftFromInteract?.Invoke();
                         currentPickupItem = pickupItem;
 
                         pickedOne.transform.parent = hand;
+                        pickedOne.tag = "Player";
                         StartCoroutine(MoveToHand(pickedOne.transform));
                     }
                 }
             }
-            else if (FindChildWithTag(hit.transform.gameObject, "PickupItem") != null)
+            else if (FindChildWithTag(hit.transform.gameObject, "PickupItem") != null && hit.name == "Hand")
             {
+                Debug.Log(hit.name + " got parent");
+                OnCloseToInteract?.Invoke("Press F to pick up " + hit.name);
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     GameObject pickedOne = FindChildWithTag(hit.transform.gameObject, "PickupItem");
                     if (pickedOne != null)
                     {
+                        OnLeftFromInteract?.Invoke();
                         currentPickupItem = pickedOne;
 
                         pickedOne.transform.parent = hand;
@@ -61,10 +73,12 @@ public class PlayerActions : MonoBehaviour
                     }
                 }
             }
-            else if (hit.transform.tag == "Net")
+            else if (hit.transform.tag == "Net" && currentPickupItem != null)
             {
-                if (Input.GetKeyDown(KeyCode.F) && currentPickupItem != null)
+                OnCloseToInteract?.Invoke("Press F to cut the net");
+                if (Input.GetKeyDown(KeyCode.F))
                 {
+                    OnLeftFromInteract?.Invoke();
                     StartCoroutine(DropAndRemove(hit.transform));
 
                     currentPickupItem.GetComponent<IPickupItem>().OnDrop();
@@ -72,10 +86,12 @@ public class PlayerActions : MonoBehaviour
                     currentPickupItem = null;
                 }
             }
-            else if (hit.transform.tag == "Rope" && currentPickupItem != null)
+            else if (hit.transform.tag == "Rope" && currentPickupItem != null && currentPickupItem.name == "Key")
             {
-                if (Input.GetKeyDown(KeyCode.F) && currentPickupItem.name == "Key")
+                OnCloseToInteract?.Invoke("Press F to cut the net");
+                if (Input.GetKeyDown(KeyCode.F))
                 {
+                    OnLeftFromInteract?.Invoke();
                     Destroy(hit.transform.gameObject);
                     redDomino.IsHanged = false;
 
@@ -84,15 +100,44 @@ public class PlayerActions : MonoBehaviour
                     currentPickupItem = null;
                 }
             }
-            else if (hit.transform.tag == "Rotator" && currentPickupItem != null)
+            else if (hit.transform.tag == "Rotator")
             {
-                if (Input.GetKeyDown(KeyCode.F) && currentPickupItem.name == "Wheel")
+                if (currentPickupItem != null)
                 {
-                    hit.transform.GetChild(0).gameObject.SetActive(true);
+                    OnCloseToInteract?.Invoke("Press F to insert the wheel");
+                    if (Input.GetKeyDown(KeyCode.F) && currentPickupItem.name == "Wheel")
+                    {
+                        OnLeftFromInteract?.Invoke();
+                        hit.transform.GetChild(0).gameObject.SetActive(true);
 
-                    currentPickupItem.GetComponent<IPickupItem>().OnDrop();
-                    Destroy(currentPickupItem);
-                    currentPickupItem = null;
+                        currentPickupItem.GetComponent<IPickupItem>().OnDrop();
+                        Destroy(currentPickupItem);
+                        currentPickupItem = null;
+                    }
+                }
+                else if (currentWheel == null)
+                {
+                    OnCloseToInteract?.Invoke("Press F to use the wheel");
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        OnLeftFromInteract?.Invoke();
+                        WheelController wheel = hit.gameObject.GetComponentInParent<WheelController>();
+                        if (wheel != null)
+                        {
+                            currentWheel = wheel;
+                            GetComponent<CharacterController>().enabled = false;
+                        }
+                        OnCloseToInteract?.Invoke("Hold A and D to rotate. Press F to leave the wheel.");
+                    }
+                }
+                else if (currentWheel != null)
+                {
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        currentWheel = null;
+                        GetComponent<CharacterController>().enabled = true;
+                        OnLeftFromInteract?.Invoke();
+                    }
                 }
             }
             else if (FindChildWithTag(hit.transform.gameObject, "Button") != null)
@@ -111,19 +156,12 @@ public class PlayerActions : MonoBehaviour
                     ball.GetComponent<BallController>().IsDone = false;
                 }
             }
-            else if (hit.transform.tag == "Rotator" && currentWheel == null)
-            {
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    WheelController wheel = hit.gameObject.GetComponentInParent<WheelController>();
-                    if (wheel != null)
-                    {
-                        currentWheel = wheel;
-                        GetComponent<CharacterController>().enabled = false;
-                    }
-                }
-            }
         }
+        if (hitColliders.Length == 0)
+        {
+            OnLeftFromInteract?.Invoke();
+        }
+
         if (Input.GetKey(KeyCode.A) && currentWheel != null)
         {
             currentWheel.Rotate(-1f);
@@ -136,7 +174,6 @@ public class PlayerActions : MonoBehaviour
         {
             currentWheel = null;
             GetComponent<CharacterController>().enabled = true;
-            Debug.Log("Can move");
         }
     }
 

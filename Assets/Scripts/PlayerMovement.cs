@@ -49,14 +49,15 @@ public class PlayerMovement : MonoBehaviour
             CurrentSpeed = CurrentSpeed / sprint;
         }
 
+        if (cc.enabled)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
 
+            Vector3 move = transform.right * x + transform.forward * z;
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        cc.Move(move * CurrentSpeed * Time.deltaTime);
+            cc.Move(move * CurrentSpeed * Time.deltaTime);
+        }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -67,4 +68,5 @@ public class PlayerMovement : MonoBehaviour
 
         cc.Move(velocity * Time.deltaTime);
     }
+
 }

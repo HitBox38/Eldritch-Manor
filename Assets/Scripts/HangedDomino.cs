@@ -26,11 +26,7 @@ public class HangedDomino : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isHanged)
-        {
-            rb.AddForce(Vector3.down * 9.81f * 2);
-        }
-        else
+        if (isHanged)
         {
             rb.Sleep();
         }
