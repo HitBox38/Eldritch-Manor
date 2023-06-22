@@ -33,13 +33,11 @@ public class PlayerActions : MonoBehaviour
                 {
                     OnLeftFromInteract?.Invoke();
                     hit.transform.GetChild(0).gameObject.SetActive(false);
-                    Debug.Log("acquired 3D glasses");
                     GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
                 }
             }
             else if (hit.transform.tag == "PickupItem" && hit.GetComponentInParent<Transform>().name != "Hand")
             {
-                Debug.Log(hit.name + " need to get parent " + hit.GetComponentInParent<Transform>().name);
                 OnCloseToInteract?.Invoke("Press F to pick up " + hit.name);
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -58,7 +56,6 @@ public class PlayerActions : MonoBehaviour
             }
             else if (FindChildWithTag(hit.transform.gameObject, "PickupItem") != null && hit.name == "Hand")
             {
-                Debug.Log(hit.name + " got parent");
                 OnCloseToInteract?.Invoke("Press F to pick up " + hit.name);
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -157,10 +154,8 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
-        Debug.Log(hitColliders.Length);
         if (hitColliders.Length <= 2)
         {
-            Debug.Log("nothing");
             OnLeftFromInteract?.Invoke();
         }
 

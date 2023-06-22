@@ -6,6 +6,8 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject uiPrompt;
+    [SerializeField] private GameObject finishMenu;
+    [SerializeField] private TMP_Text timeField;
 
     private TMP_Text promptText;
 
@@ -13,12 +15,14 @@ public class UIManager : MonoBehaviour
     {
         PlayerActions.OnCloseToInteract += ShowPrompt;
         PlayerActions.OnLeftFromInteract += HidePrompt;
+        GameManager.OnFinish += ShowFinishMenu;
     }
 
     private void OnDisable()
     {
         PlayerActions.OnCloseToInteract -= ShowPrompt;
         PlayerActions.OnLeftFromInteract -= HidePrompt;
+        GameManager.OnFinish -= ShowFinishMenu;
     }
 
     private void Start()
@@ -36,6 +40,15 @@ public class UIManager : MonoBehaviour
     public void HidePrompt()
     {
         uiPrompt.SetActive(false);
+
         promptText.text = "";
+    }
+
+    public void ShowFinishMenu(float time)
+    {
+        finishMenu.SetActive(true);
+        int minutes = (int)(time / 60);
+        int seconds = (int)(time % 60);
+        timeField.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

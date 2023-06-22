@@ -8,6 +8,9 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] private Quaternion rotation;
     [SerializeField] private Vector3 position;
     [SerializeField] private bool isWith3DGlasses;
+    [SerializeField] private int _amount = 0;
+
+    public int amount { get { return _amount; } set { _amount = value; } }
 
     private static GameObject[] CheckPointsList;
 
