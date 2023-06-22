@@ -27,12 +27,12 @@ public class PlayerActions : MonoBehaviour
         {
             if (hit.transform.tag == "3D Glasses Holder" && !GetComponent<PlayerAttributes>().IsWith3DGlasses)
             {
-                hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+                // hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
                 OnCloseToInteract?.Invoke("Press F to acquire the 3D glasses");
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     OnLeftFromInteract?.Invoke();
-                    hit.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+                    hit.transform.GetChild(0).gameObject.SetActive(false);
                     Debug.Log("acquired 3D glasses");
                     GetComponent<PlayerAttributes>().IsWith3DGlasses = true;
                 }
@@ -126,8 +126,8 @@ public class PlayerActions : MonoBehaviour
                         {
                             currentWheel = wheel;
                             GetComponent<CharacterController>().enabled = false;
+                            OnCloseToInteract?.Invoke("Hold A or D to rotate. Press F to leave the wheel.");
                         }
-                        OnCloseToInteract?.Invoke("Hold A and D to rotate. Press F to leave the wheel.");
                     }
                 }
                 else if (currentWheel != null)
@@ -157,8 +157,10 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
-        if (hitColliders.Length == 0)
+        Debug.Log(hitColliders.Length);
+        if (hitColliders.Length <= 2)
         {
+            Debug.Log("nothing");
             OnLeftFromInteract?.Invoke();
         }
 
