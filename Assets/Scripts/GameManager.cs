@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -41,12 +42,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(fadeImageController.FadeInAndOut(WaitForSceneLoad));
     }
 
-
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     private IEnumerator WaitForSceneLoad()
     {
         yield return new WaitForSeconds(0.1f); // Wait for scene to fully load
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        RestartLevel();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.GetComponent<CharacterController>().enabled = false;
         player.transform.position = Checkpoint.GetActiveCheckPointPosition();

@@ -139,6 +139,7 @@ public class PlayerActions : MonoBehaviour
             }
             else if (FindChildWithTag(hit.transform.gameObject, "Button") != null)
             {
+                OnCloseToInteract?.Invoke("Press F to press the button");
                 if (Input.GetKeyDown(KeyCode.F) && !isButtonMoving)
                 {
                     GameObject button = FindChildWithTag(hit.transform.gameObject, "Button");
@@ -146,6 +147,8 @@ public class PlayerActions : MonoBehaviour
                     Vector3 direction = (center - button.transform.position).normalized;
                     float scale = -0.1f; // Adjust this value to control how far inward you want the button to move
                     Vector3 targetPosition = button.transform.position + direction * scale;
+
+                    OnLeftFromInteract?.Invoke();
 
                     StartCoroutine(MoveButton(button, targetPosition, 0.25f)); // Adjust the duration as needed
 
