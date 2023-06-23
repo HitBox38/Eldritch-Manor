@@ -5,7 +5,8 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioSource SFX;
-    [SerializeField] private AudioSource AreaSFX;
+    [SerializeField] private AudioSource marbleSFX;
+
     [Header("SOUNDS")]
     [SerializeField] private AudioClip walkAudioClip;
     [SerializeField] private AudioClip jumpAudioClip;
@@ -42,37 +43,44 @@ public class SoundManager : MonoBehaviour
         switch (sound)
         {
             case SoundTypes.Walk:
+                Debug.Log("Walking");
                 SFX.clip = walkAudioClip;
+                SFX.loop = true;
                 break;
             case SoundTypes.Jumping:
+                Debug.Log("Jumping");
                 SFX.clip = jumpAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.Running:
                 SFX.clip = walkAudioClip;
                 break;
             case SoundTypes.GlassesOn:
                 SFX.clip = glassesOnAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.GlassesOff:
                 SFX.clip = glassesOffAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.ItemCollection:
                 SFX.clip = itemCollectionAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.MarbleRoll:
-                SFX.clip = marbleRollAudioClip;
+                marbleSFX.clip = marbleRollAudioClip;
                 break;
             case SoundTypes.MarbleImpact:
-                SFX.clip = marbleImpactAudioClip;
+                marbleSFX.clip = marbleImpactAudioClip;
                 break;
             case SoundTypes.MarbleFire:
-                SFX.clip = marbleFireAudioClip;
+                marbleSFX.clip = marbleFireAudioClip;
                 break;
             case SoundTypes.MarbleClick:
-                SFX.clip = marbleClickAudioClip;
+                marbleSFX.clip = marbleClickAudioClip;
                 break;
             case SoundTypes.MarbleReload:
-                SFX.clip = marbleReloadAudioClip;
+                marbleSFX.clip = marbleReloadAudioClip;
                 break;
             case SoundTypes.ResetLeverFunctional:
                 SFX.clip = resetLeverFunctionalAudioClip;
@@ -85,22 +93,32 @@ public class SoundManager : MonoBehaviour
                 break;
             case SoundTypes.ResetLeverFail:
                 SFX.clip = resetLeverFailAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.RoomRotation:
                 SFX.clip = roomRotationAudioClip;
+                SFX.loop = true;
                 break;
             case SoundTypes.ButtonPressed:
                 SFX.clip = buttonPressedAudioClip;
+                SFX.loop = false;
                 break;
             case SoundTypes.ScissorsUsed:
                 SFX.clip = scissorsUsedAudioClip;
+                SFX.loop = false;
                 break;
             default:
                 SFX.clip = null;
+                SFX.loop = false;
                 break;
         }
 
         SFX.Play();
+    }
+
+    public void StopSound()
+    {
+
     }
 
     public enum SoundTypes

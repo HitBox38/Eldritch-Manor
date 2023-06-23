@@ -3,6 +3,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     [SerializeField] private bool activated = false;
+    [SerializeField] private Transform parent;
 
     [Header("Saved stats")]
     [SerializeField] private Quaternion rotation;
@@ -14,9 +15,19 @@ public class Checkpoint : MonoBehaviour
 
     private static GameObject[] CheckPointsList;
 
+    private GameObject instance;
+
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (parent != null)
+        {
+            instance = parent.gameObject;
+            DontDestroyOnLoad(parent.gameObject);
+        }
+        else if (instance != null)
+        {
+            Destroy(parent.gameObject);
+        }
     }
 
     void Start()

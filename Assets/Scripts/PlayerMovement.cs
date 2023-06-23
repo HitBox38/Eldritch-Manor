@@ -54,12 +54,17 @@ public class PlayerMovement : MonoBehaviour
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
 
-            Vector3 move = transform.right * x + transform.forward * z;
+            if (z != 0 || x != 0)
+            {
+                Vector3 move = transform.right * x + transform.forward * z;
 
-            cc.Move(move * CurrentSpeed * Time.deltaTime);
+                cc.Move(move * CurrentSpeed * Time.deltaTime);
+                // SoundManager.Instance.PlaySound(SoundManager.SoundTypes.Walk);
+            }
 
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
+                // SoundManager.Instance.PlaySound(SoundManager.SoundTypes.Jumping);
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
 
