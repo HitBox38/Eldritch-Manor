@@ -1,16 +1,19 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GlassesController : MonoBehaviour
 {
-    [SerializeField] float initialCountdown = 10f;
+    [SerializeField] private float initialCountdown = 10f;
+    [SerializeField] private RectTransform glassesEffect;
+    [SerializeField] private float glassesSpeed = 2f;
     private bool canUse3DGlasses = false;
     private Camera cam;
     private List<GameObject> pictures = new List<GameObject>();
-    private bool timerRunning = false;
     private float countdown;
+    private Vector3 startPosition = new Vector3(0, Screen.height, 0);
+    private Vector3 endPosition = new Vector3(0, 0, 0);
 
-    // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
@@ -22,42 +25,37 @@ public class GlassesController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         canUse3DGlasses = GameObject.Find("Player").GetComponent<PlayerAttributes>().IsWith3DGlasses;
 
-        if (Input.GetKeyDown(KeyCode.R) && canUse3DGlasses && !timerRunning)
+        if (Input.GetKeyDown(KeyCode.R) && canUse3DGlasses && cam.enabled)
         {
-            cam.enabled = false;
+            StartCoroutine(UseGlasses());
+        }
+    }
 
-            foreach (GameObject pic in pictures)
-            {
-                if (pic.layer == 8)
-                {
-                    pic.GetComponent<MeshCollider>().enabled = false;
-                }
-            }
-            timerRunning = true;
+    IEnumerator UseGlasses()
+    {
+        float lerpTime = 0;
+        cam.enabled = false;
+        while (lerpTime < 1)
+        {
+            lerpTime += Time.deltaTime * glassesSpeed;
+            glassesEffect.localPosition = Vector3.Lerp(startPosition, endPosition, lerpTime);
+            yield return null;
         }
 
-        if (timerRunning)
-        {
-            if (countdown > 0)
-            {
-                countdown -= Time.deltaTime;
-            }
-            else
-            {
-                cam.enabled = true;
+        yield return new WaitForSeconds(countdown);
 
-                foreach (GameObject pic in pictures)
-                {
-                    pic.GetComponent<MeshCollider>().enabled = true;
-                }
-                countdown = initialCountdown;
-                timerRunning = false;
-            }
+        lerpTime = 0;
+        while (lerpTime < 1)
+        {
+            lerpTime += Time.deltaTime * glassesSpeed;
+            glassesEffect.localPosition = Vector3.Lerp(endPosition, startPosition, lerpTime);
+            yield return null;
         }
+
+        cam.enabled = true;
     }
 }
